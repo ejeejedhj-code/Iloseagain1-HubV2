@@ -1,17 +1,13 @@
--- ⚙️ Tải Rayfield UI
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+-- ⚙️ Tải Rayfield UI (Bản tương thích Delta)
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
 
 -- 🪄 Tạo cửa sổ
 local Window = Rayfield:CreateWindow({
     Name = "Iloseagain1 Hub V2 | Vietnam Piece",
     LoadingTitle = "Đang khởi động...",
     LoadingSubtitle = "by Khánh Duy",
-    ConfigurationSaving = {
-       Enabled = false
-    },
-    Discord = {
-       Enabled = false
-    },
+    ConfigurationSaving = { Enabled = false },
+    Discord = { Enabled = false },
     KeySystem = false
 })
 
@@ -19,7 +15,7 @@ local Window = Rayfield:CreateWindow({
 local MainTab = Window:CreateTab("⚔️ Main", 4483362458)
 local AutoSection = MainTab:CreateSection("Auto Farm & Combat")
 
--- 🧠 Biến lưu trạng thái
+-- 🧠 Biến lưu
 getgenv().AutoM1 = false
 getgenv().KillAura = false
 getgenv().AutoQuest = false

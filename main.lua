@@ -111,7 +111,7 @@ createToggle(tabContents["Auto M1"], "Auto M1 (Cid)", function(on)
 	if on then
 		task.spawn(function()
 			while getgenv().AutoM1 do
-				task.wait(0.01)
+				task.wait(0.1) -- 🔹 tốc độ tấn công Cid (0.1s)
 				pcall(function()
 					local player = game.Players.LocalPlayer
 					local char = player.Character

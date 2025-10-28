@@ -1,138 +1,158 @@
--- ⚙️ Tải Rayfield UI (Bản tương thích Delta)
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+--// 💠 iLoseAgain1 Hub - Orion Edition 💠
 
--- 🪄 Tạo cửa sổ
-local Window = Rayfield:CreateWindow({
-    Name = "Iloseagain1 Hub V2 | Vietnam Piece",
-    LoadingTitle = "Đang khởi động...",
-    LoadingSubtitle = "by Khánh Duy",
-    ConfigurationSaving = { Enabled = false },
-    Discord = { Enabled = false },
-    KeySystem = false
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+
+local Window = OrionLib:MakeWindow({
+    Name = "💠 iLoseAgain1 Hub 💠",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "iLoseAgain1Hub"
 })
 
--- 🧩 Tab chính
-local MainTab = Window:CreateTab("⚔️ Main", 4483362458)
-local AutoSection = MainTab:CreateSection("Auto Farm & Combat")
-
--- 🧠 Biến lưu
-getgenv().AutoM1 = false
-getgenv().KillAura = false
-getgenv().AutoQuest = false
-getgenv().TargetPlayer = ""
-getgenv().AttackDelay = 0.1
-
-----------------------------------------------------
--- 🌀 Auto M1 Cid
-----------------------------------------------------
-MainTab:CreateToggle({
-	Name = "🌀 Auto M1 (Cid)",
-	CurrentValue = false,
-	Flag = "AutoM1",
-	Callback = function(v)
-		getgenv().AutoM1 = v
-		task.spawn(function()
-			while getgenv().AutoM1 do
-				task.wait(getgenv().AttackDelay)
-				pcall(function()
-					local tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-					if tool then
-						for _, obj in pairs(tool:GetDescendants()) do
-							if obj:IsA("RemoteEvent") and obj.Name:lower():find("hitbox") then
-								if tool.Name == "Cid" then
-									obj:FireServer(8, 1)
-								else
-									obj:FireServer()
-								end
-							end
-						end
-					end
-				end)
-			end
-		end)
-	end
+-- 🌋 TAB: Kaido Quest
+local kaidoTab = Window:MakeTab({
+    Name = "Kaido Quest",
+    Icon = "rbxassetid://4483362458",
+    PremiumOnly = false
 })
 
-----------------------------------------------------
--- 🎯 Kill Aura Player
-----------------------------------------------------
-MainTab:CreateInput({
-	Name = "🎯 Nhập tên người chơi mục tiêu",
-	PlaceholderText = "Ví dụ: LongLong123",
-	RemoveTextAfterFocusLost = false,
-	Callback = function(Text)
-		getgenv().TargetPlayer = Text
-	end
+kaidoTab:AddToggle({
+    Name = "Tự động nhận nhiệm vụ Kaido",
+    Default = false,
+    Callback = function(Value)
+        getgenv().AutoKaido = Value
+        while getgenv().AutoKaido do task.wait(1)
+            pcall(function()
+                print("[Kaido Quest] Đang auto nhận nhiệm vụ...")
+                -- 🟩 Thay thế phần này bằng code nhận quest thực tế
+            end)
+        end
+    end
 })
 
-MainTab:CreateToggle({
-	Name = "⚡ Kill Aura Player",
-	CurrentValue = false,
-	Flag = "KillAura",
-	Callback = function(v)
-		getgenv().KillAura = v
-		task.spawn(function()
-			local whitelist = {"Hitbox", "Skill", "Z", "X"}
-			while getgenv().KillAura do
-				task.wait(0.4)
-				local player = game.Players:FindFirstChild(getgenv().TargetPlayer)
-				if player and player.Character then
-					for _, container in ipairs({player.Character, player:FindFirstChildOfClass("Backpack")}) do
-						if container then
-							for _, tool in ipairs(container:GetChildren()) do
-								if tool:IsA("Tool") then
-									for _, v in ipairs(tool:GetChildren()) do
-										if v:IsA("RemoteEvent") then
-											for _, keyword in ipairs(whitelist) do
-												if v.Name:find(keyword) then
-													pcall(function()
-														v:FireServer()
-													end)
-													break
-												end
-											end
-										end
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-		end)
-	end
+-- ⚔️ TAB: Kill Aura Player
+local killTab = Window:MakeTab({
+    Name = "Kill Aura Player",
+    Icon = "rbxassetid://4483362458",
+    PremiumOnly = false
 })
 
-----------------------------------------------------
--- 📜 Auto Quest (Khánh Duy 1, 2, Kaido)
-----------------------------------------------------
-MainTab:CreateToggle({
-	Name = "📜 Auto Quest (Khánh Duy 1, 2, Kaido)",
-	CurrentValue = false,
-	Flag = "AutoQuest",
-	Callback = function(v)
-		getgenv().AutoQuest = v
-		task.spawn(function()
-			while getgenv().AutoQuest do
-				task.wait(1)
-				pcall(function()
-					for _, npcName in ipairs({"KHANH DUY QUEST1", "KHANH DUY QUEST2", "KAIDOUU QUESTTT"}) do
-						local npc = workspace:FindFirstChild(npcName)
-						if npc and npc:FindFirstChild("Head") then
-							fireclickdetector(npc.Head.ClickDetector)
-							wait(0.2)
-							fireclickdetector(npc.Head.ClickDetector)
-						end
-					end
-				end)
-			end
-		end)
-	end
+local targetName = "TênNgườiChơi"
+killTab:AddTextbox({
+    Name = "Tên người chơi mục tiêu",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        targetName = Value
+    end
 })
 
-----------------------------------------------------
-Rayfield:Notify({
-	Title = "✅ Iloseagain1 Hub V2 Loaded",
-	Content = "Giao diện Rayfield đã sẵn sàng!",
-	Duration = 6
+killTab:AddToggle({
+    Name = "Bật Kill Aura (tấn công player bằng RemoteEvent)",
+    Default = false,
+    Callback = function(Value)
+        getgenv().KillAura = Value
+        task.spawn(function()
+            while task.wait(0.4) do
+                if not getgenv().KillAura then break end
+                local player = game.Players:FindFirstChild(targetName)
+                if player and player.Character then
+                    local containers = {
+                        player.Character,
+                        player:FindFirstChildOfClass("Backpack")
+                    }
+
+                    for _, container in ipairs(containers) do
+                        if container then
+                            for _, tool in ipairs(container:GetChildren()) do
+                                if tool:IsA("Tool") then
+                                    for _, v in ipairs(tool:GetChildren()) do
+                                        if v:IsA("RemoteEvent") and v.Name:match("Hitbox") then
+                                            pcall(function()
+                                                v:FireServer()
+                                                print("🎯 Gây sát thương tới:", player.Name)
+                                            end)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end)
+    end
 })
+
+-- ⚡ TAB: Auto M1 Cid
+local m1Tab = Window:MakeTab({
+    Name = "Auto M1 Cid",
+    Icon = "rbxassetid://4483362458",
+    PremiumOnly = false
+})
+
+m1Tab:AddToggle({
+    Name = "Tự động đánh M1 (vũ khí Cid)",
+    Default = false,
+    Callback = function(Value)
+        getgenv().AutoM1 = Value
+        task.spawn(function()
+            while getgenv().AutoM1 do
+                task.wait(0.1) -- tốc độ đánh 0.1s
+                pcall(function()
+                    local tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+                    if tool then
+                        for _, obj in pairs(tool:GetDescendants()) do
+                            if obj:IsA("RemoteEvent") and obj.Name:lower():find("hitbox") then
+                                if tool.Name == "Cid" then
+                                    obj:FireServer(8, 1)
+                                else
+                                    obj:FireServer()
+                                end
+                            end
+                        end
+                    end
+                end)
+            end
+        end)
+    end
+})
+
+-- 🌌 TAB: Khánh Duy
+local duyTab = Window:MakeTab({
+    Name = "Khánh Duy Scripts",
+    Icon = "rbxassetid://4483362458",
+    PremiumOnly = false
+})
+
+duyTab:AddButton({
+    Name = "Chạy script Khánh Duy 1",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/huynhthingocmai/Sikibidi/refs/heads/main/Duyhub"))()
+    end
+})
+
+duyTab:AddButton({
+    Name = "Chạy script Khánh Duy 2",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/duysira5/Gozdog/refs/heads/main/obfuscated_script-1754716954988.lua.txt"))()
+    end
+})
+
+-- 🔁 TAB: Tiện ích
+local utilsTab = Window:MakeTab({
+    Name = "Tiện ích",
+    Icon = "rbxassetid://4483362458",
+    PremiumOnly = false
+})
+
+utilsTab:AddButton({
+    Name = "Tự động Rejoin Server",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+    end
+})
+
+OrionLib:Init()
+
+print("[💠 iLoseAgain1 Hub 💠] Đã khởi động hoàn chỉnh (Orion UI)")

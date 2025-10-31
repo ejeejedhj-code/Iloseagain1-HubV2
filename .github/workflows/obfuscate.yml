@@ -1,0 +1,46 @@
+name: Obfuscate Lua on push
+
+on:
+  push:
+    paths:
+      - "script.lua"
+      - ".github/workflows/obfuscate.yml"
+
+jobs:
+  obfuscate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Read and encode script.lua to octal-escaped string and build main.lua
+        run: |
+          python3 - <<'PY'
+          import sys
+          p = "script.lua"
+          out = "main.lua"
+          with open(p, "rb") as f:
+              data = f.read()
+          esc = "".join("\\%03o" % b for b in data)
+          loader = f'''-- GENERATED loader (obfuscated)
+local s = "{esc}"
+local decoded = s:gsub("\\\\(%d%d%d)", function(d) return string.char(tonumber(d,8)) end)
+local ok, fn = pcall(loadstring, decoded)
+if not ok then
+  warn("[loader] compile error:", fn)
+else
+  pcall(fn)
+end
+'''
+          with open(out, "w", encoding="utf-8") as fo:
+              fo.write(loader)
+          print("Wrote:", out)
+          PY
+
+      - name: Commit main.lua back to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add main.lua
+          git commit -m "Auto-obfuscate: update main.lua" || echo "no changes to commit"
+          git push origin HEAD:main || echo "push failed"

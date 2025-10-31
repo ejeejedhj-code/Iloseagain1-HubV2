@@ -1,9 +1,187 @@
--- GENERATED loader (octal-escaped)
-local s = "\356\277\254 \357\217\210 Vietnam Piece Simple GUI Script \357\217\210\240\159\151\152\r\n-- T\195\161c gi\195\161: b\195\160n v\195\160 ChatGPT t\195\160o chung \357\217\210\239\191\189\r\n\r\n-- \357\158\139\226\153\131 T\195\170 GUI\r\nlocal ScreenGui = Instance.new(\"ScreenGui\", game.CoreGui)\r\nlocal Main = Instance.new(\"Frame\", ScreenGui)\r\nMain.Size = UDim2.new(0, 230, 0, 310)\r\nMain.Position = UDim2.new(0.5, -115, 0.5, -155)\r\nMain.BackgroundColor3 = Color3.fromRGB(25, 25, 25)\r\nMain.Active = true\r\nMain.Draggable = true\r\n\r\nlocal corner = Instance.new(\"UICorner\", Main)\r\ncorner.CornerRadius = UDim.new(0, 10)\r\n\r\nlocal Title = Instance.new(\"TextLabel\", Main)\r\nTitle.Size = UDim2.new(1, 0, 0, 35)\r\nTitle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)\r\nTitle.Text = \"\226\156\162 Vietnam Piece Hub \226\156\162\"\r\nTitle.TextColor3 = Color3.new(1, 1, 1)\r\nTitle.Font = Enum.Font.SourceSansBold\r\nTitle.TextSize = 18\r\n\r\nlocal function createButton(text, y, callback)\r\n\tlocal b = Instance.new(\"TextButton\", Main)\r\n\tb.Size = UDim2.new(1, -20, 0, 32)\r\n\tb.Position = UDim2.new(0, 10, 0, y)\r\n\tb.BackgroundColor3 = Color3.fromRGB(60, 60, 60)\r\n\tb.TextColor3 = Color3.new(1, 1, 1)\r\n\tb.Text = text\r\n\tb.Font = Enum.Font.SourceSansBold\r\n\tb.TextSize = 16\r\n\tlocal c = Instance.new(\"UICorner\", b)\r\n\tc.CornerRadius = UDim.new(0, 6)\r\n\tb.MouseButton1Click:Connect(callback)\r\n\treturn b\r\nend\r\n\r\n-- \226\156\136\226\153\130 Auto M1 Cid\r\ngetgenv().AutoM1 = false\r\ncreateButton(\"\226\156\152 Auto M1 Cid\", 45, function()\r\n\tgetgenv().AutoM1 = not getgenv().AutoM1\r\n\tgame:GetService(\"StarterGui\"):SetCore(\"SendNotification\", {\r\n\t\tTitle = \"Auto M1\",\r\n\t\tText = getgenv().AutoM1 and \"\196\163\194\171 \195\128\225\184\184t!\" or \"\196\163\194\171 \195\128\225\184\176t!\",\r\n\t\tDuration = 2\r\n\t})\r\n\ttask.spawn(function()\r\n\t\twhile getgenv().AutoM1 do\r\n\t\t\ttask.wait(0.1)\r\n\t\t\tpcall(function()\r\n\t\t\t\tlocal tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass(\"Tool\")\r\n\t\t\t\tif tool then\r\n\t\t\t\t\tfor _, obj in pairs(tool:GetDescendants()) do\r\n\t\t\t\t\t\tif obj:IsA(\"RemoteEvent\") and obj.Name:lower():find(\"hitbox\") then\r\n\t\t\t\t\t\t\tif tool.Name == \"Cid\" then\r\n\t\t\t\t\t\t\t\tobj:FireServer(8, 1)\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\tobj:FireServer()\r\n\t\t\t\t\t\t\tend\r\n\t\t\t\t\t\tend\r\n\t\t\t\t\tend\r\n\t\t\t\tend\r\n\t\t\tend)\r\n\t\tend\r\n\tend)\r\nend)\r\n\r\n-- \226\169\162 Auto Kaido Quest\r\ncreateButton(\"\240\159\144\169 Auto Kaido Quest\", 85, function()\r\n\tlocal args = { [1] = \"KAIDOUU QUESTTT\" }\r\n\tgame:GetService(\"ReplicatedStorage\").Remotes.CommF:FireServer(unpack(args))\r\nend)\r\n\r\n-- \226\156\188 Kh\195\129nh Duy 1\r\ncreateButton(\"\226\156\188 Auto Kh\195\129nh Duy 1\", 125, function()\r\n\tloadstring(game:HttpGet(\"https://raw.githubusercontent.com/huynhthingocmai/Sikibidi/refs/heads/main/Duyhub\"))()\r\nend)\r\n\r\n-- \226\156\188 Kh\195\129nh Duy 2\r\ncreateButton(\"\226\156\188 Auto Kh\195\129nh Duy 2\", 165, function()\r\n\tloadstring(game:HttpGet(\"https://raw.githubusercontent.com/duysira5/Gozdog/refs/heads/main/obfuscated_script-1754716954988.lua.txt\"))()\r\nend)\r\n\r\n-- \226\128\166 Kill Aura Player (gi\195\171u ng\195\186n y\195\170u c\195\161u)\r\ngetgenv().KillAura = false\r\ncreateButton(\"\226\128\166 Kill Aura Player\", 205, function()\r\n\tgetgenv().KillAura = not getgenv().KillAura\r\n\tgame:GetService(\"StarterGui\"):SetCore(\"SendNotification\", {\r\n\t\tTitle = \"Kill Aura\",\r\n\t\tText = getgenv().KillAura and \"\196\163\194\171 \195\128\225\184\184t!\" or \"\196\163\194\171 \195\128\225\184\176t!\",\r\n\t\tDuration = 2\r\n\t})\r\n\r\n\tlocal whitelist = {\"Hitbox\", \"Skill\", \"Z\", \"X\"}\r\n\tlocal enabled = true\r\n\tlocal attackDelay = 0.4\r\n\r\n\ttask.spawn(function()\r\n\t\twhile task.wait(attackDelay) do\r\n\t\t\tif not getgenv().KillAura then break end\r\n\t\t\tfor _, player in pairs(game.Players:GetPlayers()) do\r\n\t\t\t\tif player ~= game.Players.LocalPlayer and player.Character then\r\n\t\t\t\t\tlocal containers = {\r\n\t\t\t\t\t\tplayer.Character,\r\n\t\t\t\t\t\tplayer:FindFirstChildOfClass(\"Backpack\")\r\n\t\t\t\t\t}\r\n\r\t\t\t\t\tfor _, container in ipairs(containers) do\r\n\t\t\t\t\t\tif container then\r\n\t\t\t\t\t\t\tfor _, tool in ipairs(container:GetChildren()) do\r\n\t\t\t\t\t\t\t\tif tool:IsA(\"Tool\") then\r\n\t\t\t\t\t\t\t\t\tfor _, v in ipairs(tool:GetChildren()) do\r\n\t\t\t\t\t\t\t\t\t\tif v:IsA(\"RemoteEvent\") then\r\n\t\t\t\t\t\t\t\t\t\t\tfor _, keyword in ipairs(whitelist) do\r\n\t\t\t\t\t\t\t\t\t\t\t\tif v.Name:find(keyword) then\r\n\t\t\t\t\t\t\t\t\t\t\t\t\tpcall(function()\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tv:FireServer()\r\n\t\t\t\t\t\t\t\t\t\t\t\t\tend)\r\n\t\t\t\t\t\t\t\t\t\t\t\t\tbreak\r\n\t\t\t\t\t\t\t\t\t\t\t\tend\r\n\t\t\t\t\t\t\t\t\t\t\tend\r\n\t\t\t\t\t\t\t\t\t\tend\r\n\t\t\t\t\t\t\t\t\tend\r\n\t\t\t\t\t\t\t\tend\r\n\t\t\t\t\t\t\tend\r\n\t\t\t\t\t\tend\r\n\t\t\t\t\tend\r\n\t\t\t\tend\r\n\t\t\tend\r\n\t\tend\r\n\tend)\r\nend)\r\n\r\n-- \226\100\188 Tho\225\170t\r\ncreateButton(\"\226\100\188 \240\159\145\169 \195\128\225\184\184 GUI\", 260, function()\r\n\tScreenGui:Destroy()\r\nend)\r\n"
-local decoded = s:gsub("\\(%d%d%d)", function(d) return string.char(tonumber(d,8)) end)
-local ok, fn = pcall(loadstring, decoded)
-if not ok then
-  warn("[loader] compile error:", fn)
-else
-  pcall(fn)
+-- iLoseAgain1 Hub (PlayerGui-safe)
+-- Bản này tạo GUI vào PlayerGui (tránh lỗi không hiện khi parent = CoreGui)
+-- Giữ: Auto M1 Cid, Auto Kaido Quest, Khánh Duy 1 & 2, Kill Aura (dùng whitelist)
+
+local player = game.Players.LocalPlayer
+if not player then
+    warn("[iLoseAgain1] Không tìm thấy player (chạy quá sớm?).")
+    return
 end
+
+-- Helper: safe Create ScreenGui under PlayerGui
+local function newScreenGui(name)
+    local sg = Instance.new("ScreenGui")
+    sg.Name = name or "iLoseAgain1_Hub"
+    -- đảm bảo parent là PlayerGui
+    local ok, pg = pcall(function() return player:WaitForChild("PlayerGui", 5) end)
+    if ok and pg then
+        sg.Parent = pg
+    else
+        -- fallback
+        sg.Parent = game:GetService("CoreGui")
+    end
+    return sg
+end
+
+-- Tạo GUI chính
+local ScreenGui = newScreenGui("iLoseAgain1_Hub")
+local Main = Instance.new("Frame", ScreenGui)
+Main.Size = UDim2.new(0, 230, 0, 310)
+Main.Position = UDim2.new(0.5, -115, 0.5, -155)
+Main.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Main.Active = true
+Main.Draggable = true
+local corner = Instance.new("UICorner", Main)
+corner.CornerRadius = UDim.new(0, 10)
+
+local Title = Instance.new("TextLabel", Main)
+Title.Size = UDim2.new(1, 0, 0, 35)
+Title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Title.Text = "⭐ Vietnam Piece Hub ⭐"
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 18
+
+local function createButton(text, y, callback)
+    local b = Instance.new("TextButton", Main)
+    b.Size = UDim2.new(1, -20, 0, 32)
+    b.Position = UDim2.new(0, 10, 0, y)
+    b.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    b.TextColor3 = Color3.new(1, 1, 1)
+    b.Text = text
+    b.Font = Enum.Font.SourceSansBold
+    b.TextSize = 16
+    local c = Instance.new("UICorner", b)
+    c.CornerRadius = UDim.new(0, 6)
+    b.MouseButton1Click:Connect(callback)
+    return b
+end
+
+-- =========================
+-- Chức năng chính
+-- =========================
+
+-- Auto M1 Cid
+getgenv().AutoM1 = false
+createButton("🌀 Auto M1 Cid", 45, function()
+    getgenv().AutoM1 = not getgenv().AutoM1
+    -- Thông báo
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Auto M1",
+            Text = getgenv().AutoM1 and "Đã bật!" or "Đã tắt!",
+            Duration = 2
+        })
+    end)
+
+    -- Spawn loop (nếu đã bật thì chạy, tắt thì loop sẽ tự dừng)
+    task.spawn(function()
+        while getgenv().AutoM1 do
+            task.wait(0.1) -- tốc độ 0.1s như bạn yêu cầu
+            pcall(function()
+                local char = player.Character
+                if not char then return end
+                local tool = char:FindFirstChildOfClass("Tool")
+                if tool then
+                    for _, obj in pairs(tool:GetDescendants()) do
+                        if obj:IsA("RemoteEvent") and obj.Name:lower():find("hitbox") then
+                            -- chỉ M1 cho Cid dùng args (8,1)
+                            if tool.Name == "Cid" then
+                                pcall(function() obj:FireServer(8, 1) end)
+                            else
+                                pcall(function() obj:FireServer() end)
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end)
+end)
+
+-- Auto Kaido Quest
+createButton("🐉 Auto Kaido Quest", 85, function()
+    -- Gọi cách an toàn: nếu remote không tồn tại sẽ pcall và warn
+    local ok, err = pcall(function()
+        local reps = game:GetService("ReplicatedStorage")
+        if reps and reps:FindFirstChild("Remotes") and reps.Remotes:FindFirstChild("CommF") then
+            reps.Remotes.CommF:FireServer("KAIDOUU QUESTTT")
+        else
+            warn("[Kaido Quest] Không tìm thấy ReplicatedStorage.Remotes.CommF trong game này.")
+        end
+    end)
+    if not ok then warn("[Kaido Quest] Lỗi:", err) end
+end)
+
+-- Khánh Duy 1
+createButton("⚔️ Khánh Duy 1", 125, function()
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/huynhthingocmai/Sikibidi/refs/heads/main/Duyhub"))()
+    end)
+end)
+
+-- Khánh Duy 2
+createButton("⚔️ Khánh Duy 2", 165, function()
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/duysira5/Gozdog/refs/heads/main/obfuscated_script-1754716954988.lua.txt"))()
+    end)
+end)
+
+-- Kill Aura (giữ nguyên từ local whitelist đến hết như bạn yêu cầu)
+getgenv().KillAura = false
+createButton("💥 Kill Aura Player", 205, function()
+    getgenv().KillAura = not getgenv().KillAura
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Kill Aura",
+            Text = getgenv().KillAura and "Đã bật!" or "Đã tắt!",
+            Duration = 2
+        })
+    end)
+
+    local whitelist = {"Hitbox", "Skill", "Z", "X"}
+    local enabled = true
+    local attackDelay = 0.4
+
+    task.spawn(function()
+        while task.wait(attackDelay) do
+            if not getgenv().KillAura then break end
+            for _, plr in pairs(game.Players:GetPlayers()) do
+                if plr ~= player and plr.Character then
+                    local containers = {
+                        plr.Character,
+                        plr:FindFirstChildOfClass("Backpack")
+                    }
+
+                    for _, container in ipairs(containers) do
+                        if container then
+                            for _, tool in ipairs(container:GetChildren()) do
+                                if tool:IsA("Tool") then
+                                    for _, v in ipairs(tool:GetChildren()) do
+                                        if v:IsA("RemoteEvent") then
+                                            for _, keyword in ipairs(whitelist) do
+                                                if v.Name:find(keyword) then
+                                                    pcall(function()
+                                                        v:FireServer()
+                                                    end)
+                                                    break
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end)
+
+-- Đóng GUI
+createButton("❌ Đóng GUI", 260, function()
+    ScreenGui:Destroy()
+end)
+
+print("[iLoseAgain1] GUI đã tạo vào PlayerGui - test xong nếu GUI vẫn không hiện báo lại log console.")

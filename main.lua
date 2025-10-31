@@ -1,187 +1,39 @@
--- iLoseAgain1 Hub (PlayerGui-safe)
--- Bản này tạo GUI vào PlayerGui (tránh lỗi không hiện khi parent = CoreGui)
--- Giữ: Auto M1 Cid, Auto Kaido Quest, Khánh Duy 1 & 2, Kill Aura (dùng whitelist)
+-- iLoseAgain1 Hub â€” Base64 loader for main.lua
+-- Generated for user: paste this entire file as main.lua (or any .txt) in your GitHub repo.
+-- To run from Roblox executor:
+-- loadstring(game:HttpGet("https://raw.githubusercontent.com/ejeejedhj-code/Iloseagain1-HubV2/refs/heads/main/main.lua"))()
 
-local player = game.Players.LocalPlayer
-if not player then
-    warn("[iLoseAgain1] Không tìm thấy player (chạy quá sớm?).")
-    return
-end
+local __b = [[
+LS0g8J+MnyBWaWV0bmFtIFBpZWNlIFNpbXBsZSBHVUkgU2NyaXB0IPCfjJ8KLS0gVMOhYyBnaeG6ozogYuG6oW4gdsOgIENoYXRHUFQgdOG6oW8gY2h1bmcg8J+YjgoKLS0g8J+nqSBU4bqhbyBHVUkKbG9jYWwgU2NyZWVuR3VpID0gSW5zdGFuY2UubmV3KCJTY3JlZW5HdWkiLCBnYW1lLkNvcmVHdWkpClNjcmVlbkd1aS5OYW1lID0gImlMb3NlQWdhaW4xX1ZQX0h1YiIKU2NyZWVuR3VpLlJlc2V0T25TcGF3biA9IGZhbHNlCgpsb2NhbCBNYWluID0gSW5zdGFuY2UubmV3KCJGcmFtZSIsIFNjcmVlbkd1aSkKTWFpbi5TaXplID0gVURpbTIubmV3KDAsIDIzMCwgMCwgMzEwKQpNYWluLlBvc2l0aW9uID0gVURpbTIubmV3KDAuNSwgLTExNSwgMC41LCAtMTU1KQpNYWluLkJhY2tncm91bmRDb2xvcjMgPSBDb2xvcjMuZnJvbVJHQigyNSwgMjUsIDI1KQpNYWluLkFjdGl2ZSA9IHRydWUKTWFpbi5EcmFnZ2FibGUgPSB0cnVlCgpsb2NhbCBjb3JuZXIgPSBJbnN0YW5jZS5uZXcoIlVJQ29ybmVyIiwgTWFpbikKY29ybmVyLkNvcm5lclJhZGl1cyA9IFVEaW0ubmV3KDAsIDEwKQoKbG9jYWwgVGl0bGUgPSBJbnN0YW5jZS5uZXcoIlRleHRMYWJlbCIsIE1haW4pClRpdGxlLlNpemUgPSBVRGltMi5uZXcoMSwgMCwgMCwgMzUpClRpdGxlLlBvc2l0aW9uID0gVURpbTIubmV3KDAsIDAsIDAsIDApClRpdGxlLkJhY2tncm91bmRDb2xvcjMgPSBDb2xvcjMuZnJvbVJHQig1MCwgNTAsIDUwKQpUaXRsZS5Cb3JkZXJTaXplUGl4ZWwgPSAwClRpdGxlLlRleHQgPSAi4q2QIFZpZXRuYW0gUGllY2UgSHViIOKtkCIKVGl0bGUuVGV4dENvbG9yMyA9IENvbG9yMy5uZXcoMSwgMSwgMSkKVGl0bGUuRm9udCA9IEVudW0uRm9udC5Tb3VyY2VTYW5zQm9sZApUaXRsZS5UZXh0U2l6ZSA9IDE4ClRpdGxlLlRleHRTY2FsZWQgPSB0cnVlCgpsb2NhbCBmdW5jdGlvbiBjcmVhdGVCdXR0b24odGV4dCwgeSwgY2FsbGJhY2spCglsb2NhbCBiID0gSW5zdGFuY2UubmV3KCJUZXh0QnV0dG9uIiwgTWFpbikKCWIuU2l6ZSA9IFVEaW0yLm5ldygxLCAtMjAsIDAsIDMyKQoJYi5Qb3NpdGlvbiA9IFVEaW0yLm5ldygwLCAxMCwgMCwgeSkKCWIuQmFja2dyb3VuZENvbG9yMyA9IENvbG9yMy5mcm9tUkdCKDYwLCA2MCwgNjApCgliLlRleHRDb2xvcjMgPSBDb2xvcjMubmV3KDEsIDEsIDEpCgliLlRleHQgPSB0ZXh0CgliLkZvbnQgPSBFbnVtLkZvbnQuU291cmNlU2Fuc0JvbGQKCWIuVGV4dFNpemUgPSAxNgoJbG9jYWwgYyA9IEluc3RhbmNlLm5ldygiVUlDb3JuZXIiLCBiKQoJYy5Db3JuZXJSYWRpdXMgPSBVRGltLm5ldygwLCA2KQoJYi5Nb3VzZUJ1dHRvbjFDbGljazpDb25uZWN0KGNhbGxiYWNrKQoJcmV0dXJuIGIKZW5kCgotLSDimpnvuI8gQXV0byBNMSBDaWQgKHThu5FjIMSR4buZIDAuMXMpCmdldGdlbnYoKS5BdXRvTTEgPSBmYWxzZQpjcmVhdGVCdXR0b24oIvCfjIAgQXV0byBNMSBDaWQiLCA0NSwgZnVuY3Rpb24oKQoJZ2V0Z2VudigpLkF1dG9NMSA9IG5vdCBnZXRnZW52KCkuQXV0b00xCglwY2FsbChmdW5jdGlvbigpCgkJZ2FtZTpHZXRTZXJ2aWNlKCJTdGFydGVyR3VpIik6U2V0Q29yZSgiU2VuZE5vdGlmaWNhdGlvbiIsIHsKCQkJVGl0bGUgPSAiQXV0byBNMSIsCgkJCVRleHQgPSBnZXRnZW52KCkuQXV0b00xIGFuZCAixJDDoyBi4bqtdCEiIG9yICLEkMOjIHThuq90ISIsCgkJCUR1cmF0aW9uID0gMgoJCX0pCgllbmQpCgoJdGFzay5zcGF3bihmdW5jdGlvbigpCgkJd2hpbGUgZ2V0Z2VudigpLkF1dG9NMSBkbwoJCQl0YXNrLndhaXQoMC4xKSAtLSB04buRYyDEkeG7mSAwLjFzCgkJCXBjYWxsKGZ1bmN0aW9uKCkKCQkJCWxvY2FsIHBsciA9IGdhbWUuUGxheWVycy5Mb2NhbFBsYXllcgoJCQkJaWYgbm90IHBsciBvciBub3QgcGxyLkNoYXJhY3RlciB0aGVuIHJldHVybiBlbmQKCQkJCWxvY2FsIHRvb2wgPSBwbHIuQ2hhcmFjdGVyOkZpbmRGaXJzdENoaWxkT2ZDbGFzcygiVG9vbCIpCgkJCQlpZiB0b29sIHRoZW4KCQkJCQlmb3IgXywgb2JqIGluIHBhaXJzKHRvb2w6R2V0RGVzY2VuZGFudHMoKSkgZG8KCQkJCQkJaWYgb2JqOklzQSgiUmVtb3RlRXZlbnQiKSBhbmQgc3RyaW5nLmxvd2VyKG9iai5OYW1lKTpmaW5kKCJoaXRib3giKSB0aGVuCgkJCQkJCQktLSBH4buNaSBGaXJlU2VydmVyKDgsMSkgY2jhu4kgduG7m2kgdsWpIGtow60gQ2lkCgkJCQkJCQlpZiB0b29sLk5hbWUgPT0gIkNpZCIgdGhlbgoJCQkJCQkJCXBjYWxsKGZ1bmN0aW9uKCkgb2JqOkZpcmVTZXJ2ZXIoOCwgMSkgZW5kKQoJCQkJCQkJZWxzZQoJCQkJCQkJCXBjYWxsKGZ1bmN0aW9uKCkgb2JqOkZpcmVTZXJ2ZXIoKSBlbmQpCgkJCQkJCQllbmQKCQkJCQkJZW5kCgkJCQkJZW5kCgkJCQllbmQKCQkJZW5kKQoJCWVuZAoJZW5kKQplbmQpCgotLSDwn6egIEF1dG8gS2FpZG8gUXVlc3QgKHbDrSBk4bulOiBn4buNaSByZW1vdGU7IHRoYXkgbuG6v3UgZ2FtZSBraMOhYykKY3JlYXRlQnV0dG9uKCLwn5CJIEF1dG8gS2FpZG8gUXVlc3QiLCA4NSwgZnVuY3Rpb24oKQoJcGNhbGwoZnVuY3Rpb24oKQoJCS0tIFRoYXkgxJHhu5VpIHRoZW8gUmVtb3RlIHRo4buxYyB04bq/IGPhu6dhIGdhbWUgbuG6v3Uga2jDoWMKCQlsb2NhbCBhcmdzID0geyBbMV0gPSAiS0FJRE9VVSBRVUVTVFRUIiB9CgkJbG9jYWwgcnMgPSBnYW1lOkdldFNlcnZpY2UoIlJlcGxpY2F0ZWRTdG9yYWdlIikKCQlpZiBycyBhbmQgcnM6RmluZEZpcnN0Q2hpbGQoIlJlbW90ZXMiKSBhbmQgcnMuUmVtb3RlczpGaW5kRmlyc3RDaGlsZCgiQ29tbUYiKSB0aGVuCgkJCXJzLlJlbW90ZXMuQ29tbUY6RmlyZVNlcnZlcih1bnBhY2soYXJncykpCgkJZWxzZQoJCQktLSBmYWxsYmFjazogdMOsbSBSZW1vdGUgdHJvbmcgd29ya3NwYWNlIG7hur91IGtow6FjCgkJCS0tIHByaW50IHRow7RuZyBiw6FvIG7hur91IGtvIHTDrG0gdGjhuqV5CgkJCXdhcm4oIkF1dG8gS2FpZG8gUXVlc3Q6IGtow7RuZyB0w6xtIHRo4bqleSBSZW1vdGVzLkNvbW1GIikKCQllbmQKCWVuZCkKZW5kKQoKLS0g4pqhIEtow6FuaCBEdXkgMSAoZ2nhu68gbmd1ecOqbiBsb2Fkc3RyaW5nKQpjcmVhdGVCdXR0b24oIuKalO+4jyBBdXRvIEtow6FuaCBEdXkgMSIsIDEyNSwgZnVuY3Rpb24oKQoJcGNhbGwoZnVuY3Rpb24oKQoJCWxvYWRzdHJpbmcoZ2FtZTpIdHRwR2V0KCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vaHV5bmh0aGluZ29jbWFpL1Npa2liaWRpL3JlZnMvaGVhZHMvbWFpbi9EdXlodWIiKSkoKQoJZW5kKQplbmQpCgotLSDimqEgS2jDoW5oIER1eSAyIChnaeG7ryBuZ3V5w6puIGxvYWRzdHJpbmcpCmNyZWF0ZUJ1dHRvbigi4pqU77iPIEF1dG8gS2jDoW5oIER1eSAyIiwgMTY1LCBmdW5jdGlvbigpCglwY2FsbChmdW5jdGlvbigpCgkJbG9hZHN0cmluZyhnYW1lOkh0dHBHZXQoImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9kdXlzaXJhNS9Hb3pkb2cvcmVmcy9oZWFkcy9tYWluL29iZnVzY2F0ZWRfc2NyaXB0LTE3NTQ3MTY5NTQ5ODgubHVhLnR4dCIpKSgpCgllbmQpCmVuZCkKCi0tIPCflKUgS2lsbCBBdXJhIFBsYXllciAoZ2nhu68gbmd1ecOqbiDEkW/huqFuIHThu6sgbG9jYWwgd2hpdGVsaXN0IMSR4bq/biBo4bq/dCkKZ2V0Z2VudigpLktpbGxBdXJhID0gZmFsc2UKY3JlYXRlQnV0dG9uKCLwn5KlIEtpbGwgQXVyYSBQbGF5ZXIiLCAyMDUsIGZ1bmN0aW9uKCkKCWdldGdlbnYoKS5LaWxsQXVyYSA9IG5vdCBnZXRnZW52KCkuS2lsbEF1cmEKCXBjYWxsKGZ1bmN0aW9uKCkKCQlnYW1lOkdldFNlcnZpY2UoIlN0YXJ0ZXJHdWkiKTpTZXRDb3JlKCJTZW5kTm90aWZpY2F0aW9uIiwgewoJCQlUaXRsZSA9ICJLaWxsIEF1cmEiLAoJCQlUZXh0ID0gZ2V0Z2VudigpLktpbGxBdXJhIGFuZCAixJDDoyBi4bqtdCEiIG9yICLEkMOjIHThuq90ISIsCgkJCUR1cmF0aW9uID0gMgoJCX0pCgllbmQpCgoJLS0gR2nhu68gbmd1ecOqbiDEkW/huqFuIGtpbGwgYXVyYSBi4bqhbiB5w6p1IGPhuqd1Cglsb2NhbCB3aGl0ZWxpc3QgPSB7IkhpdGJveCIsICJTa2lsbCIsICJaIiwgIlgifQoJbG9jYWwgZW5hYmxlZCA9IHRydWUKCWxvY2FsIGF0dGFja0RlbGF5ID0gMC40CgoJdGFzay5zcGF3bihmdW5jdGlvbigpCgkJd2hpbGUgdGFzay53YWl0KGF0dGFja0RlbGF5KSBkbwoJCQlpZiBub3QgZ2V0Z2VudigpLktpbGxBdXJhIHRoZW4gYnJlYWsgZW5kCgkJCWZvciBfLCBwbGF5ZXIgaW4gcGFpcnMoZ2FtZS5QbGF5ZXJzOkdldFBsYXllcnMoKSkgZG8KCQkJCWlmIHBsYXllciB+PSBnYW1lLlBsYXllcnMuTG9jYWxQbGF5ZXIgYW5kIHBsYXllci5DaGFyYWN0ZXIgdGhlbgoJCQkJCWxvY2FsIGNvbnRhaW5lcnMgPSB7CgkJCQkJCXBsYXllci5DaGFyYWN0ZXIsCgkJCQkJCXBsYXllcjpGaW5kRmlyc3RDaGlsZE9mQ2xhc3MoIkJhY2twYWNrIikKCQkJCQl9CgkJCQkJZm9yIF8sIGNvbnRhaW5lciBpbiBpcGFpcnMoY29udGFpbmVycykgZG8KCQkJCQkJaWYgY29udGFpbmVyIHRoZW4KCQkJCQkJCWZvciBfLCB0b29sIGluIGlwYWlycyhjb250YWluZXI6R2V0Q2hpbGRyZW4oKSkgZG8KCQkJCQkJCQlpZiB0b29sOklzQSgiVG9vbCIpIHRoZW4KCQkJCQkJCQkJZm9yIF8sIHYgaW4gaXBhaXJzKHRvb2w6R2V0Q2hpbGRyZW4oKSkgZG8KCQkJCQkJCQkJCWlmIHY6SXNBKCJSZW1vdGVFdmVudCIpIHRoZW4KCQkJCQkJCQkJCQlmb3IgXywga2V5d29yZCBpbiBpcGFpcnMod2hpdGVsaXN0KSBkbwoJCQkJCQkJCQkJCQlpZiB2Lk5hbWU6ZmluZChrZXl3b3JkKSB0aGVuCgkJCQkJCQkJCQkJCQlwY2FsbChmdW5jdGlvbigpCgkJCQkJCQkJCQkJCQkJdjpGaXJlU2VydmVyKCkKCQkJCQkJCQkJCQkJCWVuZCkKCQkJCQkJCQkJCQkJCWJyZWFrCgkJCQkJCQkJCQkJCWVuZAoJCQkJCQkJCQkJCWVuZAoJCQkJCQkJCQkJZW5kCgkJCQkJCQkJCWVuZAoJCQkJCQkJCWVuZAoJCQkJCQkJZW5kCgkJCQkJCWVuZAoJCQkJCWVuZAoJCQkJZW5kCgkJCWVuZAoJCWVuZAoJZW5kKQplbmQpCgotLSDinYwgVGhvw6F0CmNyZWF0ZUJ1dHRvbigi4p2MIMSQw7NuZyBHVUkiLCAyNjAsIGZ1bmN0aW9uKCkKCVNjcmVlbkd1aTpEZXN0cm95KCkKZW5kKQo=
+]]
 
--- Helper: safe Create ScreenGui under PlayerGui
-local function newScreenGui(name)
-    local sg = Instance.new("ScreenGui")
-    sg.Name = name or "iLoseAgain1_Hub"
-    -- đảm bảo parent là PlayerGui
-    local ok, pg = pcall(function() return player:WaitForChild("PlayerGui", 5) end)
-    if ok and pg then
-        sg.Parent = pg
-    else
-        -- fallback
-        sg.Parent = game:GetService("CoreGui")
+local function b64decode(data)
+    data = string.gsub(data, '[^%w%+%/%=]', '')
+    local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    data = data:gsub('.', function(x)
+        if x == '=' then return '' end
+        local i = b:find(x) - 1
+        return string.format('%06b', i)
+    end)
+    local bytes = {}
+    for i = 1, #data, 8 do
+        local byte = data:sub(i, i+7)
+        if #byte == 8 then
+            table.insert(bytes, string.char(tonumber(byte, 2)))
+        end
     end
-    return sg
+    return table.concat(bytes)
 end
 
--- Tạo GUI chính
-local ScreenGui = newScreenGui("iLoseAgain1_Hub")
-local Main = Instance.new("Frame", ScreenGui)
-Main.Size = UDim2.new(0, 230, 0, 310)
-Main.Position = UDim2.new(0.5, -115, 0.5, -155)
-Main.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-Main.Active = true
-Main.Draggable = true
-local corner = Instance.new("UICorner", Main)
-corner.CornerRadius = UDim.new(0, 10)
 
-local Title = Instance.new("TextLabel", Main)
-Title.Size = UDim2.new(1, 0, 0, 35)
-Title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-Title.Text = "⭐ Vietnam Piece Hub ⭐"
-Title.TextColor3 = Color3.new(1, 1, 1)
-Title.Font = Enum.Font.SourceSansBold
-Title.TextSize = 18
+local ok, err = pcall(function()
+    local decoded = b64decode(__b)
+    assert(decoded and #decoded > 0, "decode failed")
+    local f, e = loadstring(decoded)
+    if not f then error("loadstring failed: "..tostring(e)) end
+    f()
+end)
 
-local function createButton(text, y, callback)
-    local b = Instance.new("TextButton", Main)
-    b.Size = UDim2.new(1, -20, 0, 32)
-    b.Position = UDim2.new(0, 10, 0, y)
-    b.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    b.TextColor3 = Color3.new(1, 1, 1)
-    b.Text = text
-    b.Font = Enum.Font.SourceSansBold
-    b.TextSize = 16
-    local c = Instance.new("UICorner", b)
-    c.CornerRadius = UDim.new(0, 6)
-    b.MouseButton1Click:Connect(callback)
-    return b
+if not ok then
+    warn("[iLoseAgain1 Hub] Failed to run obfuscated script:", err)
 end
-
--- =========================
--- Chức năng chính
--- =========================
-
--- Auto M1 Cid
-getgenv().AutoM1 = false
-createButton("🌀 Auto M1 Cid", 45, function()
-    getgenv().AutoM1 = not getgenv().AutoM1
-    -- Thông báo
-    pcall(function()
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Auto M1",
-            Text = getgenv().AutoM1 and "Đã bật!" or "Đã tắt!",
-            Duration = 2
-        })
-    end)
-
-    -- Spawn loop (nếu đã bật thì chạy, tắt thì loop sẽ tự dừng)
-    task.spawn(function()
-        while getgenv().AutoM1 do
-            task.wait(0.1) -- tốc độ 0.1s như bạn yêu cầu
-            pcall(function()
-                local char = player.Character
-                if not char then return end
-                local tool = char:FindFirstChildOfClass("Tool")
-                if tool then
-                    for _, obj in pairs(tool:GetDescendants()) do
-                        if obj:IsA("RemoteEvent") and obj.Name:lower():find("hitbox") then
-                            -- chỉ M1 cho Cid dùng args (8,1)
-                            if tool.Name == "Cid" then
-                                pcall(function() obj:FireServer(8, 1) end)
-                            else
-                                pcall(function() obj:FireServer() end)
-                            end
-                        end
-                    end
-                end
-            end)
-        end
-    end)
-end)
-
--- Auto Kaido Quest
-createButton("🐉 Auto Kaido Quest", 85, function()
-    -- Gọi cách an toàn: nếu remote không tồn tại sẽ pcall và warn
-    local ok, err = pcall(function()
-        local reps = game:GetService("ReplicatedStorage")
-        if reps and reps:FindFirstChild("Remotes") and reps.Remotes:FindFirstChild("CommF") then
-            reps.Remotes.CommF:FireServer("KAIDOUU QUESTTT")
-        else
-            warn("[Kaido Quest] Không tìm thấy ReplicatedStorage.Remotes.CommF trong game này.")
-        end
-    end)
-    if not ok then warn("[Kaido Quest] Lỗi:", err) end
-end)
-
--- Khánh Duy 1
-createButton("⚔️ Khánh Duy 1", 125, function()
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/huynhthingocmai/Sikibidi/refs/heads/main/Duyhub"))()
-    end)
-end)
-
--- Khánh Duy 2
-createButton("⚔️ Khánh Duy 2", 165, function()
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/duysira5/Gozdog/refs/heads/main/obfuscated_script-1754716954988.lua.txt"))()
-    end)
-end)
-
--- Kill Aura (giữ nguyên từ local whitelist đến hết như bạn yêu cầu)
-getgenv().KillAura = false
-createButton("💥 Kill Aura Player", 205, function()
-    getgenv().KillAura = not getgenv().KillAura
-    pcall(function()
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Kill Aura",
-            Text = getgenv().KillAura and "Đã bật!" or "Đã tắt!",
-            Duration = 2
-        })
-    end)
-
-    local whitelist = {"Hitbox", "Skill", "Z", "X"}
-    local enabled = true
-    local attackDelay = 0.4
-
-    task.spawn(function()
-        while task.wait(attackDelay) do
-            if not getgenv().KillAura then break end
-            for _, plr in pairs(game.Players:GetPlayers()) do
-                if plr ~= player and plr.Character then
-                    local containers = {
-                        plr.Character,
-                        plr:FindFirstChildOfClass("Backpack")
-                    }
-
-                    for _, container in ipairs(containers) do
-                        if container then
-                            for _, tool in ipairs(container:GetChildren()) do
-                                if tool:IsA("Tool") then
-                                    for _, v in ipairs(tool:GetChildren()) do
-                                        if v:IsA("RemoteEvent") then
-                                            for _, keyword in ipairs(whitelist) do
-                                                if v.Name:find(keyword) then
-                                                    pcall(function()
-                                                        v:FireServer()
-                                                    end)
-                                                    break
-                                                end
-                                            end
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end)
-end)
-
--- Đóng GUI
-createButton("❌ Đóng GUI", 260, function()
-    ScreenGui:Destroy()
-end)
-
-print("[iLoseAgain1] GUI đã tạo vào PlayerGui - test xong nếu GUI vẫn không hiện báo lại log console.")

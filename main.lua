@@ -1,67 +1,166 @@
--- iLoseAgain1 Hub - Base64 loader (paste this as loader.lua)
-local __b = [[__B64_STRING__]]
+-- 🌟 Vietnam Piece Simple GUI Script 🌟
+-- Tác giả: bạn và ChatGPT tạo chung 😎
 
--- base64 decode (Lua 5.1 safe)
-local function b64decode(data)
-    data = string.gsub(data, '[^%w%+%/%=]', '')
-    local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-    local s = ''
-    local n = 0
-    local buf = 0
-    for i = 1, #data do
-        local c = data:sub(i,i)
-        if c == '=' then break end
-        local v = b:find(c) - 1
-        buf = (buf << 6) + v
-        n = n + 6
-        while n >= 8 do
-            n = n - 8
-            local byte = (buf >> n) & 0xFF
-            s = s .. string.char(byte)
-            buf = buf & ((1 << n) - 1)
-        end
-    end
-    return s
+-- 🧩 Tạo GUI
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "iLoseAgain1_VP_Hub"
+ScreenGui.ResetOnSpawn = false
+
+local Main = Instance.new("Frame", ScreenGui)
+Main.Size = UDim2.new(0, 230, 0, 310)
+Main.Position = UDim2.new(0.5, -115, 0.5, -155)
+Main.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Main.Active = true
+Main.Draggable = true
+
+local corner = Instance.new("UICorner", Main)
+corner.CornerRadius = UDim.new(0, 10)
+
+local Title = Instance.new("TextLabel", Main)
+Title.Size = UDim2.new(1, 0, 0, 35)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Title.BorderSizePixel = 0
+Title.Text = "⭐ Vietnam Piece Hub ⭐"
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 18
+Title.TextScaled = true
+
+local function createButton(text, y, callback)
+	local b = Instance.new("TextButton", Main)
+	b.Size = UDim2.new(1, -20, 0, 32)
+	b.Position = UDim2.new(0, 10, 0, y)
+	b.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+	b.TextColor3 = Color3.new(1, 1, 1)
+	b.Text = text
+	b.Font = Enum.Font.SourceSansBold
+	b.TextSize = 16
+	local c = Instance.new("UICorner", b)
+	c.CornerRadius = UDim.new(0, 6)
+	b.MouseButton1Click:Connect(callback)
+	return b
 end
 
--- fallback shift/bit ops for environments w/o bitop
-if not (bit32 and bit32.lshift) then
-    -- provide simple bit helpers using arithmetic (works for bytes)
-    local function shl(a,b) return a * (2^b) end
-    local function shr(a,b) return math.floor(a / (2^b)) end
-    local function band(a,b) return a % (2^32) >= b and b or (a%2^32)%b end
-    -- we used << and >> and & in decode; to be safe, reimplement decode using arithmetic:
-    local function b64decode_fallback(data)
-        data = string.gsub(data, '[^%w%+%/%=]', '')
-        local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-        local out = {}
-        local acc = 0
-        local bits = 0
-        for i = 1, #data do
-            local c = data:sub(i,i)
-            if c == '=' then break end
-            local v = b:find(c) - 1
-            acc = acc * 64 + v
-            bits = bits + 6
-            while bits >= 8 do
-                bits = bits - 8
-                local byte = math.floor(acc / (2^bits)) % 256
-                table.insert(out, string.char(byte))
-            end
-        end
-        return table.concat(out)
-    end
-    b64decode = b64decode_fallback
-end
+-- ⚙️ Auto M1 Cid (tốc độ 0.1s)
+getgenv().AutoM1 = false
+createButton("🌀 Auto M1 Cid", 45, function()
+	getgenv().AutoM1 = not getgenv().AutoM1
+	pcall(function()
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Auto M1",
+			Text = getgenv().AutoM1 and "Đã bật!" or "Đã tắt!",
+			Duration = 2
+		})
+	end)
 
-local ok, err = pcall(function()
-    local decoded = b64decode(__b)
-    assert(decoded and #decoded > 0, "decode failed")
-    local f, e = loadstring(decoded)
-    if not f then error("loadstring failed: "..tostring(e)) end
-    f()
+	task.spawn(function()
+		while getgenv().AutoM1 do
+			task.wait(0.1) -- tốc độ 0.1s
+			pcall(function()
+				local plr = game.Players.LocalPlayer
+				if not plr or not plr.Character then return end
+				local tool = plr.Character:FindFirstChildOfClass("Tool")
+				if tool then
+					for _, obj in pairs(tool:GetDescendants()) do
+						if obj:IsA("RemoteEvent") and string.lower(obj.Name):find("hitbox") then
+							-- Gọi FireServer(8,1) chỉ với vũ khí Cid
+							if tool.Name == "Cid" then
+								pcall(function() obj:FireServer(8, 1) end)
+							else
+								pcall(function() obj:FireServer() end)
+							end
+						end
+					end
+				end
+			end)
+		end
+	end)
 end)
 
-if not ok then
-    warn("[iLoseAgain1 Hub] Failed to run obfuscated script:", err)
-end
+-- 🧠 Auto Kaido Quest (ví dụ: gọi remote; thay nếu game khác)
+createButton("🐉 Auto Kaido Quest", 85, function()
+	pcall(function()
+		-- Thay đổi theo Remote thực tế của game nếu khác
+		local args = { [1] = "KAIDOUU QUESTTT" }
+		local rs = game:GetService("ReplicatedStorage")
+		if rs and rs:FindFirstChild("Remotes") and rs.Remotes:FindFirstChild("CommF") then
+			rs.Remotes.CommF:FireServer(unpack(args))
+		else
+			-- fallback: tìm Remote trong workspace nếu khác
+			-- print thông báo nếu ko tìm thấy
+			warn("Auto Kaido Quest: không tìm thấy Remotes.CommF")
+		end
+	end)
+end)
+
+-- ⚡ Khánh Duy 1 (giữ nguyên loadstring)
+createButton("⚔️ Auto Khánh Duy 1", 125, function()
+	pcall(function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/huynhthingocmai/Sikibidi/refs/heads/main/Duyhub"))()
+	end)
+end)
+
+-- ⚡ Khánh Duy 2 (giữ nguyên loadstring)
+createButton("⚔️ Auto Khánh Duy 2", 165, function()
+	pcall(function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/duysira5/Gozdog/refs/heads/main/obfuscated_script-1754716954988.lua.txt"))()
+	end)
+end)
+
+-- 🔥 Kill Aura Player (giữ nguyên đoạn từ local whitelist đến hết)
+getgenv().KillAura = false
+createButton("💥 Kill Aura Player", 205, function()
+	getgenv().KillAura = not getgenv().KillAura
+	pcall(function()
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Kill Aura",
+			Text = getgenv().KillAura and "Đã bật!" or "Đã tắt!",
+			Duration = 2
+		})
+	end)
+
+	-- Giữ nguyên đoạn kill aura bạn yêu cầu
+	local whitelist = {"Hitbox", "Skill", "Z", "X"}
+	local enabled = true
+	local attackDelay = 0.4
+
+	task.spawn(function()
+		while task.wait(attackDelay) do
+			if not getgenv().KillAura then break end
+			for _, player in pairs(game.Players:GetPlayers()) do
+				if player ~= game.Players.LocalPlayer and player.Character then
+					local containers = {
+						player.Character,
+						player:FindFirstChildOfClass("Backpack")
+					}
+					for _, container in ipairs(containers) do
+						if container then
+							for _, tool in ipairs(container:GetChildren()) do
+								if tool:IsA("Tool") then
+									for _, v in ipairs(tool:GetChildren()) do
+										if v:IsA("RemoteEvent") then
+											for _, keyword in ipairs(whitelist) do
+												if v.Name:find(keyword) then
+													pcall(function()
+														v:FireServer()
+													end)
+													break
+												end
+											end
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end)
+end)
+
+-- ❌ Thoát
+createButton("❌ Đóng GUI", 260, function()
+	ScreenGui:Destroy()
+end)
